@@ -1,4 +1,4 @@
-const CACHE_NAME = 'marina-v1';
+const CACHE_NAME = 'marina-v2';
 const ASSETS = [
     './',
     './index.html',
