@@ -1,6 +1,6 @@
-# Gestor de Marina
+# Marina Mar - Tijucas SC
 
-Sistema PWA (Progressive Web App) para gestao de marinas pequenas. Controle de vagas, embarcacoes, clientes e manutencoes com funcionamento offline e notificacoes via WhatsApp.
+Sistema PWA (Progressive Web App) para gestao da Marina Mar. Controle de vagas, embarcacoes, clientes e manutencoes com funcionamento offline e notificacoes via WhatsApp.
 
 ## Funcionalidades
 
@@ -66,14 +66,34 @@ O app estara disponivel em:
 https://SEU_USUARIO.github.io/Gestor-de-Marina/
 ```
 
-## Instalacao no Celular Android
+## Instalacao no Celular
 
-1. Abra o link do app no Chrome do celular
-2. Toque no menu (3 pontinhos)
-3. Selecione "Adicionar a tela inicial"
+### Android (Chrome)
+
+1. Abra o link do app no **Chrome**
+2. Toque no menu (3 pontinhos no canto superior)
+3. Selecione **"Adicionar a tela inicial"**
 4. Confirme o nome e toque em "Adicionar"
 
-O app sera instalado como um aplicativo no celular e funcionara offline.
+### iPhone (Safari)
+
+**Importante:** No iPhone, use o **Safari** (nao o Chrome) para instalar o app.
+
+1. Abra o link do app no **Safari**
+2. Toque no botao de compartilhar (quadrado com seta para cima)
+3. Role a lista e toque em **"Adicionar a Tela de Inicio"**
+4. Confirme o nome e toque em "Adicionar"
+
+### Comparativo de Funcionalidades
+
+| Funcionalidade | Android (Chrome) | iPhone (Safari) |
+|----------------|------------------|-----------------|
+| Instalar como app | Sim | Sim |
+| Funcionar offline | Sim | Sim |
+| Tela cheia | Sim | Sim |
+| Push notifications | Sim | iOS 16.4+ |
+
+**Nota:** O Chrome no iPhone nao permite instalar PWAs - e uma restricao da Apple. Use sempre o Safari no iPhone.
 
 ## Backup dos Dados
 
@@ -100,19 +120,20 @@ Gestor-de-Marina/
 ├── sw.js               # Service Worker
 ├── README.md           # Este arquivo
 ├── css/
-│   └── style.css       # Estilos responsivos
+│   └── style.css       # Estilos responsivos (layout acessivel)
 ├── js/
-│   ├── app.js          # Logica principal
-│   ├── db.js           # Banco de dados (Dexie)
-│   ├── utils.js        # Funcoes auxiliares
+│   ├── app.js          # Logica principal e navegacao
+│   ├── db.js           # Banco de dados (Dexie/IndexedDB)
+│   ├── utils.js        # Funcoes auxiliares e Modal
 │   ├── clientes.js     # CRUD de clientes
 │   ├── vagas.js        # CRUD de vagas
 │   ├── embarcacoes.js  # CRUD de embarcacoes
 │   ├── manutencoes.js  # CRUD de manutencoes
-│   └── backup.js       # Exportar/Importar
+│   └── backup.js       # Exportar/Importar JSON
+├── logo/
+│   └── logo-marina-mar.jpeg  # Logo da Marina Mar
 └── icons/
-    ├── icon.svg        # Icone vetorial
-    ├── generate-icons.html  # Gerador de icones
+    ├── generate.py     # Gerador de icones (Python)
     └── icon-*.png      # Icones em varios tamanhos
 ```
 
