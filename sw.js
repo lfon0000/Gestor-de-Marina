@@ -1,4 +1,4 @@
-const CACHE_NAME = 'marina-v2';
+const CACHE_NAME = 'marina-v3';
 const ASSETS = [
     './',
     './index.html',
@@ -17,7 +17,7 @@ const ASSETS = [
     'https://unpkg.com/dexie@3.2.4/dist/dexie.min.js'
 ];
 
-// Install - cache assets
+// Install - cache assets and force activation
 self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(CACHE_NAME)
@@ -25,9 +25,16 @@ self.addEventListener('install', (event) => {
                 return cache.addAll(ASSETS);
             })
             .then(() => {
-                self.skipWaiting();
+                return self.skipWaiting();
             })
     );
+});
+
+// Force refresh on all clients when new SW activates
+self.addEventListener('message', (event) => {
+    if (event.data === 'skipWaiting') {
+        self.skipWaiting();
+    }
 });
 
 // Activate - clean old caches

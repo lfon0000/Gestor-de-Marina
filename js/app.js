@@ -203,11 +203,28 @@ const Navigation = {
 // App initialization
 const App = {
     async init() {
-        // Register service worker
+        // Register service worker with auto-update
         if ('serviceWorker' in navigator) {
             try {
                 const registration = await navigator.serviceWorker.register('./sw.js');
                 console.log('Service Worker registrado:', registration.scope);
+
+                // Check for updates
+                registration.addEventListener('updatefound', () => {
+                    const newWorker = registration.installing;
+                    newWorker.addEventListener('statechange', () => {
+                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                            // New version available, reload
+                            if (confirm('Nova versao disponivel! Atualizar agora?')) {
+                                newWorker.postMessage('skipWaiting');
+                                window.location.reload();
+                            }
+                        }
+                    });
+                });
+
+                // Force update check
+                registration.update();
             } catch (error) {
                 console.error('Erro ao registrar Service Worker:', error);
             }
