@@ -54,33 +54,32 @@ const Manutencoes = {
             let daysText = '';
             if (days !== null) {
                 if (days < 0) {
-                    daysText = `${Math.abs(days)} dias atrasada`;
+                    daysText = `${Math.abs(days)}d atras`;
                 } else if (days === 0) {
                     daysText = 'Hoje';
                 } else if (days === 1) {
                     daysText = 'Amanha';
                 } else {
-                    daysText = `Em ${days} dias`;
+                    daysText = `${days}d`;
                 }
             }
 
             return `
-                <li data-id="${m.id}">
+                <li class="item-card" data-id="${m.id}">
                     <div class="item-info">
                         <div class="item-title">${m.tipo}</div>
                         <div class="item-subtitle">
                             ${embarcacoesMap[m.embarcacaoId] || 'Embarcacao'}
                             ${m.proximaData ? ` - ${Utils.formatDate(m.proximaData)}` : ''}
-                            ${daysText ? ` (${daysText})` : ''}
                         </div>
                     </div>
-                    <span class="item-badge badge-${m.status}">${Utils.capitalize(m.status)}</span>
+                    <span class="item-badge badge-${m.status}">${daysText || Utils.capitalize(m.status)}</span>
                 </li>
             `;
         }).join('');
 
         // Add click handlers
-        listEl.querySelectorAll('li').forEach(li => {
+        listEl.querySelectorAll('.item-card').forEach(li => {
             li.addEventListener('click', () => {
                 const id = parseInt(li.dataset.id);
                 this.showDetail(id);

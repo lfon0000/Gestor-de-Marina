@@ -1,4 +1,4 @@
-// Main application module
+// Main application module - Marina Mar
 
 // Dashboard module
 const Dashboard = {
@@ -45,7 +45,6 @@ const Dashboard = {
     },
 
     async renderManutencoesList(listEl, manutencoes, isAtrasada = false) {
-        // Get embarcacao and cliente info
         const items = [];
         for (const m of manutencoes) {
             const emb = await Database.getEmbarcacao(m.embarcacaoId);
@@ -72,7 +71,7 @@ const Dashboard = {
             }
 
             return `
-                <li data-id="${manutencao.id}">
+                <li class="item-card" data-id="${manutencao.id}">
                     <div class="item-info">
                         <div class="item-title">${manutencao.tipo}</div>
                         <div class="item-subtitle">
@@ -85,8 +84,7 @@ const Dashboard = {
             `;
         }).join('');
 
-        // Add click handlers
-        listEl.querySelectorAll('li').forEach(li => {
+        listEl.querySelectorAll('.item-card').forEach(li => {
             li.addEventListener('click', () => {
                 const id = parseInt(li.dataset.id);
                 Manutencoes.showDetail(id);
@@ -95,7 +93,7 @@ const Dashboard = {
     }
 };
 
-// Navigation module
+// Navigation module - Bottom Tab Bar
 const Navigation = {
     currentPage: 'dashboard',
 
@@ -104,18 +102,11 @@ const Navigation = {
     },
 
     setupEventListeners() {
-        // Menu toggle
-        document.getElementById('btn-menu').addEventListener('click', () => this.toggleMenu());
-        document.getElementById('btn-close-menu').addEventListener('click', () => this.toggleMenu());
-        document.getElementById('overlay').addEventListener('click', () => this.toggleMenu());
-
-        // Navigation links
-        document.querySelectorAll('.nav-list a').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const page = link.dataset.page;
+        // Bottom navigation
+        document.querySelectorAll('#bottom-nav .nav-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const page = btn.dataset.page;
                 this.navigateTo(page);
-                this.toggleMenu();
             });
         });
 
@@ -123,17 +114,18 @@ const Navigation = {
         document.getElementById('btn-add').addEventListener('click', () => this.handleAdd());
     },
 
-    toggleMenu() {
-        document.getElementById('sidebar').classList.toggle('active');
-        document.getElementById('overlay').classList.toggle('active');
-    },
-
     navigateTo(page) {
+        // Config abre backup e manutencoes
+        if (page === 'config') {
+            this.showConfigMenu();
+            return;
+        }
+
         this.currentPage = page;
 
-        // Update active nav link
-        document.querySelectorAll('.nav-list a').forEach(link => {
-            link.classList.toggle('active', link.dataset.page === page);
+        // Update active nav button
+        document.querySelectorAll('#bottom-nav .nav-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.page === page);
         });
 
         // Update page visibility
@@ -142,23 +134,47 @@ const Navigation = {
             p.classList.toggle('hidden', p.id !== `page-${page}`);
         });
 
-        // Update header
-        const titles = {
-            'dashboard': 'Dashboard',
-            'vagas': 'Vagas',
-            'embarcacoes': 'Embarcacoes',
-            'clientes': 'Clientes',
-            'manutencoes': 'Manutencoes',
-            'backup': 'Backup'
-        };
-        document.getElementById('page-title').textContent = titles[page] || 'Marina';
-
         // Show/hide add button
         const showAdd = ['vagas', 'embarcacoes', 'clientes', 'manutencoes'].includes(page);
         document.getElementById('btn-add').classList.toggle('hidden', !showAdd);
 
         // Refresh data
         this.refreshPage(page);
+    },
+
+    showConfigMenu() {
+        const html = `
+            <div style="display: flex; flex-direction: column; gap: 16px;">
+                <button class="btn btn-primary btn-block" id="cfg-manutencoes">
+                    Ver Todas as Manutencoes
+                </button>
+                <button class="btn btn-primary btn-block" id="cfg-backup">
+                    Backup dos Dados
+                </button>
+            </div>
+        `;
+
+        Modal.open('Configuracoes', html, {
+            hideCancel: true,
+            hideSave: true
+        });
+
+        document.getElementById('cfg-manutencoes').addEventListener('click', () => {
+            Modal.close();
+            this.navigateTo('manutencoes');
+            // Atualiza nav buttons
+            document.querySelectorAll('#bottom-nav .nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+        });
+
+        document.getElementById('cfg-backup').addEventListener('click', () => {
+            Modal.close();
+            this.navigateTo('backup');
+            document.querySelectorAll('#bottom-nav .nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+        });
     },
 
     async refreshPage(page) {
@@ -209,12 +225,10 @@ const App = {
                 const registration = await navigator.serviceWorker.register('./sw.js');
                 console.log('Service Worker registrado:', registration.scope);
 
-                // Check for updates
                 registration.addEventListener('updatefound', () => {
                     const newWorker = registration.installing;
                     newWorker.addEventListener('statechange', () => {
                         if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                            // New version available, reload
                             if (confirm('Nova versao disponivel! Atualizar agora?')) {
                                 newWorker.postMessage('skipWaiting');
                                 window.location.reload();
@@ -223,7 +237,6 @@ const App = {
                     });
                 });
 
-                // Force update check
                 registration.update();
             } catch (error) {
                 console.error('Erro ao registrar Service Worker:', error);
@@ -243,7 +256,7 @@ const App = {
         await Manutencoes.init();
         Backup.init();
 
-        console.log('Gestor de Marina inicializado');
+        console.log('Marina Mar inicializado');
     }
 };
 

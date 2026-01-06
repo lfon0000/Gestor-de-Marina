@@ -2,42 +2,29 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#1a5f7a">
-    <meta name="description" content="Sistema de gestao de marina - controle de vagas, embarcacoes e manutencoes">
-    <title>Gestor de Marina</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#1E3A5F">
+    <meta name="description" content="Marina Mar - Sistema de gestao de marina">
+    <title>Marina Mar</title>
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/png" href="icons/icon-192.png">
     <link rel="apple-touch-icon" href="icons/icon-192.png">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <!-- HEADER com Logo -->
     <header id="header">
-        <button id="btn-menu" class="btn-icon" aria-label="Menu">
-            <span class="hamburger"></span>
-        </button>
-        <h1 id="page-title">Dashboard</h1>
-        <button id="btn-add" class="btn-icon hidden" aria-label="Adicionar">+</button>
+        <div class="logo-container">
+            <img src="logo/logo-marina-mar.jpeg" alt="Marina Mar" class="logo-img">
+            <h1>Marina Mar</h1>
+        </div>
+        <button id="btn-add" class="hidden" aria-label="Adicionar">+</button>
     </header>
 
-    <nav id="sidebar">
-        <div class="sidebar-header">
-            <span class="logo">Marina</span>
-            <button id="btn-close-menu" class="btn-icon" aria-label="Fechar">&times;</button>
-        </div>
-        <ul class="nav-list">
-            <li><a href="#" data-page="dashboard" class="active">Dashboard</a></li>
-            <li><a href="#" data-page="vagas">Vagas</a></li>
-            <li><a href="#" data-page="embarcacoes">Embarcacoes</a></li>
-            <li><a href="#" data-page="clientes">Clientes</a></li>
-            <li><a href="#" data-page="manutencoes">Manutencoes</a></li>
-            <li><a href="#" data-page="backup">Backup</a></li>
-        </ul>
-    </nav>
-    <div id="overlay"></div>
-
+    <!-- CONTEUDO PRINCIPAL -->
     <main id="main-content">
-        <!-- Dashboard -->
+
+        <!-- DASHBOARD -->
         <section id="page-dashboard" class="page active">
             <div class="stats-grid">
                 <div class="stat-card">
@@ -46,39 +33,41 @@
                 </div>
                 <div class="stat-card">
                     <span class="stat-number" id="stat-vagas-ocupadas">0</span>
-                    <span class="stat-label">Vagas Ocupadas</span>
+                    <span class="stat-label">Ocupadas</span>
                 </div>
                 <div class="stat-card">
                     <span class="stat-number" id="stat-embarcacoes">0</span>
                     <span class="stat-label">Embarcacoes</span>
                 </div>
-                <div class="stat-card alert">
+                <div class="stat-card alerta">
                     <span class="stat-number" id="stat-manutencoes">0</span>
-                    <span class="stat-label">Manut. Pendentes</span>
+                    <span class="stat-label">Manutencoes</span>
                 </div>
             </div>
 
             <div class="section">
-                <h2>Manutencoes Proximas (7 dias)</h2>
+                <h2 class="section-title">Proximas Manutencoes</h2>
                 <ul id="list-manutencoes-proximas" class="item-list"></ul>
                 <p id="no-manutencoes-proximas" class="empty-message hidden">Nenhuma manutencao nos proximos 7 dias</p>
             </div>
 
             <div class="section">
-                <h2>Manutencoes Atrasadas</h2>
+                <h2 class="section-title">Manutencoes Atrasadas</h2>
                 <ul id="list-manutencoes-atrasadas" class="item-list"></ul>
                 <p id="no-manutencoes-atrasadas" class="empty-message hidden">Nenhuma manutencao atrasada</p>
             </div>
         </section>
 
-        <!-- Vagas -->
+        <!-- VAGAS -->
         <section id="page-vagas" class="page hidden">
+            <h2 class="section-title">Vagas da Marina</h2>
             <div class="vagas-grid" id="vagas-grid"></div>
             <p id="no-vagas" class="empty-message hidden">Nenhuma vaga cadastrada</p>
         </section>
 
-        <!-- Embarcacoes -->
+        <!-- EMBARCACOES -->
         <section id="page-embarcacoes" class="page hidden">
+            <h2 class="section-title">Embarcacoes</h2>
             <div class="filter-bar">
                 <select id="filter-tipo-embarcacao">
                     <option value="">Todos os tipos</option>
@@ -93,8 +82,9 @@
             <p id="no-embarcacoes" class="empty-message hidden">Nenhuma embarcacao cadastrada</p>
         </section>
 
-        <!-- Clientes -->
+        <!-- CLIENTES -->
         <section id="page-clientes" class="page hidden">
+            <h2 class="section-title">Clientes</h2>
             <div class="search-bar">
                 <input type="text" id="search-clientes" placeholder="Buscar cliente...">
             </div>
@@ -102,8 +92,9 @@
             <p id="no-clientes" class="empty-message hidden">Nenhum cliente cadastrado</p>
         </section>
 
-        <!-- Manutencoes -->
+        <!-- MANUTENCOES -->
         <section id="page-manutencoes" class="page hidden">
+            <h2 class="section-title">Manutencoes</h2>
             <div class="filter-bar">
                 <select id="filter-status-manutencao">
                     <option value="">Todos os status</option>
@@ -116,31 +107,58 @@
             <p id="no-manutencoes" class="empty-message hidden">Nenhuma manutencao cadastrada</p>
         </section>
 
-        <!-- Backup -->
+        <!-- BACKUP -->
         <section id="page-backup" class="page hidden">
-            <div class="backup-section">
+            <h2 class="section-title">Backup dos Dados</h2>
+
+            <div class="backup-card">
                 <h2>Exportar Dados</h2>
-                <p>Baixe um arquivo JSON com todos os dados do sistema.</p>
-                <button id="btn-exportar" class="btn btn-primary">Exportar Dados</button>
+                <p>Salve todos os dados em um arquivo.</p>
+                <button id="btn-exportar" class="btn btn-primary btn-block">EXPORTAR</button>
                 <p id="last-export" class="info-text"></p>
             </div>
 
-            <div class="backup-section">
+            <div class="backup-card">
                 <h2>Importar Dados</h2>
-                <p>Restaure dados a partir de um arquivo JSON.</p>
-                <p class="warning-text">Atencao: Isso substituira todos os dados atuais!</p>
+                <p>Restaure dados de um arquivo salvo.</p>
+                <p class="warning">Isso vai substituir todos os dados!</p>
                 <input type="file" id="input-importar" accept=".json" class="hidden">
-                <button id="btn-importar" class="btn btn-secondary">Selecionar Arquivo</button>
+                <button id="btn-importar" class="btn btn-secondary btn-block">IMPORTAR</button>
             </div>
         </section>
+
     </main>
 
-    <!-- Modal -->
+    <!-- NAVEGACAO INFERIOR -->
+    <nav id="bottom-nav">
+        <button class="nav-btn active" data-page="dashboard">
+            <span class="nav-icon">&#127968;</span>
+            <span class="nav-label">Inicio</span>
+        </button>
+        <button class="nav-btn" data-page="vagas">
+            <span class="nav-icon">&#9875;</span>
+            <span class="nav-label">Vagas</span>
+        </button>
+        <button class="nav-btn" data-page="embarcacoes">
+            <span class="nav-icon">&#128674;</span>
+            <span class="nav-label">Barcos</span>
+        </button>
+        <button class="nav-btn" data-page="clientes">
+            <span class="nav-icon">&#128100;</span>
+            <span class="nav-label">Clientes</span>
+        </button>
+        <button class="nav-btn" data-page="config">
+            <span class="nav-icon">&#9881;</span>
+            <span class="nav-label">Config</span>
+        </button>
+    </nav>
+
+    <!-- MODAL -->
     <div id="modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
                 <h2 id="modal-title">Titulo</h2>
-                <button id="btn-close-modal" class="btn-icon">&times;</button>
+                <button id="btn-close-modal" class="btn-close">&times;</button>
             </div>
             <div id="modal-body"></div>
             <div class="modal-footer">
@@ -151,10 +169,14 @@
         </div>
     </div>
 
-    <!-- Toast -->
+    <!-- TOAST -->
     <div id="toast" class="toast"></div>
 
-    <!-- Scripts -->
+    <!-- Elementos ocultos para compatibilidade -->
+    <nav id="sidebar" class="hidden"></nav>
+    <div id="overlay" class="hidden"></div>
+
+    <!-- SCRIPTS -->
     <script src="https://unpkg.com/dexie@3.2.4/dist/dexie.min.js"></script>
     <script src="js/db.js"></script>
     <script src="js/utils.js"></script>

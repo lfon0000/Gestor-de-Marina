@@ -1,60 +1,59 @@
-"""Script para gerar icones do app Gestor de Marina"""
+"""Script para gerar icones do app Marina Mar"""
 from PIL import Image, ImageDraw
 
 SIZES = [72, 96, 128, 144, 152, 192, 384, 512]
-PRIMARY_COLOR = (26, 95, 122)  # #1a5f7a
-WHITE = (255, 255, 255)
+AZUL_MARINHO = (30, 58, 95)  # #1E3A5F
+AMARELO = (255, 229, 0)  # #FFE500
+BRANCO = (255, 255, 255)
 
 def draw_icon(size):
-    """Desenha o icone com ancora e ondas"""
+    """Desenha o icone com barco estilizado"""
     img = Image.new('RGBA', (size, size), (0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
 
     # Background com cantos arredondados
-    radius = int(size * 0.15)
-    draw.rounded_rectangle([0, 0, size-1, size-1], radius=radius, fill=PRIMARY_COLOR)
+    radius = int(size * 0.18)
+    draw.rounded_rectangle([0, 0, size-1, size-1], radius=radius, fill=AZUL_MARINHO)
 
     # Escala
     s = size / 512
     cx = size // 2
 
-    # Anel no topo da ancora
-    ring_y = int(140 * s)
-    ring_r = int(40 * s)
-    ring_w = int(12 * s)
-    draw.ellipse([cx - ring_r, ring_y - ring_r, cx + ring_r, ring_y + ring_r], outline=WHITE, width=ring_w)
+    # Sol (circulo amarelo no fundo)
+    sol_r = int(120 * s)
+    sol_y = int(180 * s)
+    draw.ellipse([cx - sol_r, sol_y - sol_r, cx + sol_r, sol_y + sol_r], fill=AMARELO)
 
-    # Barra vertical
-    bar_w = int(24 * s)
-    bar_top = int(100 * s)
-    bar_bottom = int(380 * s)
-    draw.rectangle([cx - bar_w//2, bar_top, cx + bar_w//2, bar_bottom], fill=WHITE)
+    # Barco (triangulo estilizado)
+    boat_w = int(200 * s)
+    boat_h = int(80 * s)
+    boat_y = int(260 * s)
 
-    # Barra horizontal no topo
-    hbar_w = int(160 * s)
-    hbar_h = int(24 * s)
-    hbar_y = int(80 * s)
-    draw.rectangle([cx - hbar_w//2, hbar_y, cx + hbar_w//2, hbar_y + hbar_h], fill=WHITE)
+    # Casco do barco
+    hull_points = [
+        (cx - boat_w//2, boat_y),
+        (cx + boat_w//2 + int(40*s), boat_y),
+        (cx + boat_w//2 - int(20*s), boat_y + boat_h),
+        (cx - boat_w//2 + int(30*s), boat_y + boat_h),
+    ]
+    draw.polygon(hull_points, fill=AZUL_MARINHO, outline=BRANCO, width=max(1, int(4*s)))
 
-    # Bracos da ancora (arcos simplificados como linhas)
-    arm_w = int(20 * s)
-    arm_y = int(340 * s)
-    arm_offset = int(90 * s)
-
-    # Braco esquerdo
-    draw.line([cx - arm_offset, arm_y, cx, int(300 * s)], fill=WHITE, width=arm_w)
-    # Braco direito
-    draw.line([cx + arm_offset, arm_y, cx, int(300 * s)], fill=WHITE, width=arm_w)
+    # Cabine
+    cabin_w = int(60 * s)
+    cabin_h = int(50 * s)
+    cabin_x = cx - int(20 * s)
+    cabin_y = boat_y - cabin_h + int(10*s)
+    draw.rectangle([cabin_x, cabin_y, cabin_x + cabin_w, boat_y + int(5*s)], fill=BRANCO)
 
     # Ondas
-    wave_y = int(420 * s)
-    wave_w = int(16 * s)
-    wave_amp = int(20 * s)
-
-    # Desenhar ondas simplificadas
-    wave_start = int(80 * s)
-    wave_end = int(432 * s)
-    draw.line([wave_start, wave_y, wave_end, wave_y], fill=WHITE, width=wave_w)
+    wave_y = int(380 * s)
+    wave_h = int(20 * s)
+    for i in range(3):
+        offset = int(40 * s * i)
+        w_start = int(60*s) + offset
+        w_end = int(180*s) + offset
+        draw.arc([w_start, wave_y, w_end, wave_y + wave_h*2],
+                 start=0, end=180, fill=BRANCO, width=max(2, int(8*s)))
 
     return img
 

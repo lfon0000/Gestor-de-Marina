@@ -40,7 +40,7 @@ const Embarcacoes = {
         }
 
         listEl.innerHTML = filtered.map(emb => `
-            <li data-id="${emb.id}">
+            <li class="item-card" data-id="${emb.id}">
                 <div class="item-info">
                     <div class="item-title">${emb.nome}</div>
                     <div class="item-subtitle">
@@ -55,7 +55,7 @@ const Embarcacoes = {
         `).join('');
 
         // Add click handlers
-        listEl.querySelectorAll('li').forEach(li => {
+        listEl.querySelectorAll('.item-card').forEach(li => {
             li.addEventListener('click', () => {
                 const id = parseInt(li.dataset.id);
                 this.showDetail(id);

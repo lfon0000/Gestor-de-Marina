@@ -26,7 +26,7 @@ const Clientes = {
         emptyEl.classList.add('hidden');
 
         listEl.innerHTML = this.list.map(cliente => `
-            <li data-id="${cliente.id}">
+            <li class="item-card" data-id="${cliente.id}">
                 <div class="item-info">
                     <div class="item-title">${cliente.nome}</div>
                     <div class="item-subtitle">${Utils.formatPhone(cliente.telefone)}</div>
@@ -35,7 +35,7 @@ const Clientes = {
         `).join('');
 
         // Add click handlers
-        listEl.querySelectorAll('li').forEach(li => {
+        listEl.querySelectorAll('.item-card').forEach(li => {
             li.addEventListener('click', () => {
                 const id = parseInt(li.dataset.id);
                 this.showDetail(id);

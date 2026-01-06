@@ -175,7 +175,7 @@ const Modal = {
         this.onDelete = options.onDelete || null;
 
         this.saveBtn.textContent = options.saveText || 'Salvar';
-        this.saveBtn.classList.toggle('hidden', !options.onSave);
+        this.saveBtn.classList.toggle('hidden', !options.onSave || options.hideSave);
         this.deleteBtn.classList.toggle('hidden', !options.onDelete);
         this.cancelBtn.classList.toggle('hidden', options.hideCancel);
 

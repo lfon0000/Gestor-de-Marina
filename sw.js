@@ -1,4 +1,4 @@
-const CACHE_NAME = 'marina-v3';
+const CACHE_NAME = 'marina-mar-v1';
 const ASSETS = [
     './',
     './index.html',
@@ -12,6 +12,7 @@ const ASSETS = [
     './js/embarcacoes.js',
     './js/manutencoes.js',
     './js/backup.js',
+    './logo/logo-marina-mar.jpeg',
     './icons/icon-192.png',
     './icons/icon-512.png',
     'https://unpkg.com/dexie@3.2.4/dist/dexie.min.js'
@@ -72,7 +73,6 @@ self.addEventListener('fetch', (event) => {
                         return networkResponse;
                     })
                     .catch(() => {
-                        // Offline fallback for HTML pages
                         if (event.request.headers.get('accept').includes('text/html')) {
                             return caches.match('./index.html');
                         }
