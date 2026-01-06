@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#1a5f7a">
+    <meta name="description" content="Sistema de gestao de marina - controle de vagas, embarcacoes e manutencoes">
+    <title>Gestor de Marina</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="icons/icon-192.png">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header id="header">
+        <button id="btn-menu" class="btn-icon" aria-label="Menu">
+            <span class="hamburger"></span>
+        </button>
+        <h1 id="page-title">Dashboard</h1>
+        <button id="btn-add" class="btn-icon hidden" aria-label="Adicionar">+</button>
+    </header>
+
+    <nav id="sidebar" class="hidden">
+        <div class="sidebar-header">
+            <span class="logo">Marina</span>
+            <button id="btn-close-menu" class="btn-icon" aria-label="Fechar">&times;</button>
+        </div>
+        <ul class="nav-list">
+            <li><a href="#" data-page="dashboard" class="active">Dashboard</a></li>
+            <li><a href="#" data-page="vagas">Vagas</a></li>
+            <li><a href="#" data-page="embarcacoes">Embarcacoes</a></li>
+            <li><a href="#" data-page="clientes">Clientes</a></li>
+            <li><a href="#" data-page="manutencoes">Manutencoes</a></li>
+            <li><a href="#" data-page="backup">Backup</a></li>
+        </ul>
+    </nav>
+    <div id="overlay" class="hidden"></div>
+
+    <main id="main-content">
+        <!-- Dashboard -->
+        <section id="page-dashboard" class="page active">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number" id="stat-vagas-livres">0</span>
+                    <span class="stat-label">Vagas Livres</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="stat-vagas-ocupadas">0</span>
+                    <span class="stat-label">Vagas Ocupadas</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="stat-embarcacoes">0</span>
+                    <span class="stat-label">Embarcacoes</span>
+                </div>
+                <div class="stat-card alert">
+                    <span class="stat-number" id="stat-manutencoes">0</span>
+                    <span class="stat-label">Manut. Pendentes</span>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Manutencoes Proximas (7 dias)</h2>
+                <ul id="list-manutencoes-proximas" class="item-list"></ul>
+                <p id="no-manutencoes-proximas" class="empty-message hidden">Nenhuma manutencao nos proximos 7 dias</p>
+            </div>
+
+            <div class="section">
+                <h2>Manutencoes Atrasadas</h2>
+                <ul id="list-manutencoes-atrasadas" class="item-list"></ul>
+                <p id="no-manutencoes-atrasadas" class="empty-message hidden">Nenhuma manutencao atrasada</p>
+            </div>
+        </section>
+
+        <!-- Vagas -->
+        <section id="page-vagas" class="page hidden">
+            <div class="vagas-grid" id="vagas-grid"></div>
+            <p id="no-vagas" class="empty-message hidden">Nenhuma vaga cadastrada</p>
+        </section>
+
+        <!-- Embarcacoes -->
+        <section id="page-embarcacoes" class="page hidden">
+            <div class="filter-bar">
+                <select id="filter-tipo-embarcacao">
+                    <option value="">Todos os tipos</option>
+                    <option value="lancha">Lancha</option>
+                    <option value="jet-ski">Jet Ski</option>
+                    <option value="veleiro">Veleiro</option>
+                    <option value="iate">Iate</option>
+                    <option value="barco">Barco</option>
+                </select>
+            </div>
+            <ul id="list-embarcacoes" class="item-list"></ul>
+            <p id="no-embarcacoes" class="empty-message hidden">Nenhuma embarcacao cadastrada</p>
+        </section>
+
+        <!-- Clientes -->
+        <section id="page-clientes" class="page hidden">
+            <div class="search-bar">
+                <input type="text" id="search-clientes" placeholder="Buscar cliente...">
+            </div>
+            <ul id="list-clientes" class="item-list"></ul>
+            <p id="no-clientes" class="empty-message hidden">Nenhum cliente cadastrado</p>
+        </section>
+
+        <!-- Manutencoes -->
+        <section id="page-manutencoes" class="page hidden">
+            <div class="filter-bar">
+                <select id="filter-status-manutencao">
+                    <option value="">Todos os status</option>
+                    <option value="pendente">Pendente</option>
+                    <option value="atrasada">Atrasada</option>
+                    <option value="concluida">Concluida</option>
+                </select>
+            </div>
+            <ul id="list-manutencoes" class="item-list"></ul>
+            <p id="no-manutencoes" class="empty-message hidden">Nenhuma manutencao cadastrada</p>
+        </section>
+
+        <!-- Backup -->
+        <section id="page-backup" class="page hidden">
+            <div class="backup-section">
+                <h2>Exportar Dados</h2>
+                <p>Baixe um arquivo JSON com todos os dados do sistema.</p>
+                <button id="btn-exportar" class="btn btn-primary">Exportar Dados</button>
+                <p id="last-export" class="info-text"></p>
+            </div>
+
+            <div class="backup-section">
+                <h2>Importar Dados</h2>
+                <p>Restaure dados a partir de um arquivo JSON.</p>
+                <p class="warning-text">Atencao: Isso substituira todos os dados atuais!</p>
+                <input type="file" id="input-importar" accept=".json" class="hidden">
+                <button id="btn-importar" class="btn btn-secondary">Selecionar Arquivo</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal -->
+    <div id="modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Titulo</h2>
+                <button id="btn-close-modal" class="btn-icon">&times;</button>
+            </div>
+            <div id="modal-body"></div>
+            <div class="modal-footer">
+                <button id="btn-modal-cancel" class="btn btn-secondary">Cancelar</button>
+                <button id="btn-modal-save" class="btn btn-primary">Salvar</button>
+                <button id="btn-modal-delete" class="btn btn-danger hidden">Excluir</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="toast hidden"></div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/dexie@3.2.4/dist/dexie.min.js"></script>
+    <script src="js/db.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/clientes.js"></script>
+    <script src="js/vagas.js"></script>
+    <script src="js/embarcacoes.js"></script>
+    <script src="js/manutencoes.js"></script>
+    <script src="js/backup.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

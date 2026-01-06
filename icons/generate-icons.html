@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gerador de Icones</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        canvas { border: 1px solid #ccc; margin: 5px; }
+        .download-link { display: block; margin: 5px 0; }
+    </style>
+</head>
+<body>
+    <h1>Gerador de Icones - Gestor de Marina</h1>
+    <p>Clique com o botao direito em cada icone e selecione "Salvar imagem como..." para baixar.</p>
+    <div id="icons"></div>
+    <script>
+        const sizes = [72, 96, 128, 144, 152, 192, 384, 512];
+        const container = document.getElementById('icons');
+
+        sizes.forEach(size => {
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+
+            // Background with rounded corners
+            const radius = size * 0.15;
+            ctx.fillStyle = '#1a5f7a';
+            ctx.beginPath();
+            ctx.moveTo(radius, 0);
+            ctx.lineTo(size - radius, 0);
+            ctx.quadraticCurveTo(size, 0, size, radius);
+            ctx.lineTo(size, size - radius);
+            ctx.quadraticCurveTo(size, size, size - radius, size);
+            ctx.lineTo(radius, size);
+            ctx.quadraticCurveTo(0, size, 0, size - radius);
+            ctx.lineTo(0, radius);
+            ctx.quadraticCurveTo(0, 0, radius, 0);
+            ctx.fill();
+
+            // Anchor icon
+            const cx = size / 2;
+            const cy = size / 2;
+            const scale = size / 512;
+
+            ctx.strokeStyle = '#ffffff';
+            ctx.fillStyle = '#ffffff';
+            ctx.lineWidth = 24 * scale;
+            ctx.lineCap = 'round';
+
+            // Ring at top
+            ctx.beginPath();
+            ctx.arc(cx, 140 * scale, 40 * scale, 0, Math.PI * 2);
+            ctx.stroke();
+
+            // Vertical bar
+            ctx.fillRect(cx - 12 * scale, 100 * scale, 24 * scale, 280 * scale);
+
+            // Horizontal bar at top
+            ctx.fillRect(cx - 80 * scale, 80 * scale, 160 * scale, 24 * scale);
+
+            // Left arm
+            ctx.beginPath();
+            ctx.moveTo(170 * scale, 340 * scale);
+            ctx.quadraticCurveTo(170 * scale, 280 * scale, cx, 300 * scale);
+            ctx.stroke();
+
+            // Right arm
+            ctx.beginPath();
+            ctx.moveTo(342 * scale, 340 * scale);
+            ctx.quadraticCurveTo(342 * scale, 280 * scale, cx, 300 * scale);
+            ctx.stroke();
+
+            // Waves
+            ctx.lineWidth = 20 * scale;
+            ctx.beginPath();
+            ctx.moveTo(80 * scale, 420 * scale);
+            ctx.quadraticCurveTo(128 * scale, 380 * scale, 176 * scale, 420 * scale);
+            ctx.quadraticCurveTo(224 * scale, 460 * scale, 272 * scale, 420 * scale);
+            ctx.quadraticCurveTo(320 * scale, 380 * scale, 368 * scale, 420 * scale);
+            ctx.quadraticCurveTo(416 * scale, 460 * scale, 432 * scale, 420 * scale);
+            ctx.stroke();
+
+            const div = document.createElement('div');
+            div.style.display = 'inline-block';
+            div.style.textAlign = 'center';
+            div.style.margin = '10px';
+
+            const label = document.createElement('p');
+            label.textContent = `icon-${size}.png`;
+
+            div.appendChild(canvas);
+            div.appendChild(label);
+
+            // Create download link
+            const link = document.createElement('a');
+            link.href = canvas.toDataURL('image/png');
+            link.download = `icon-${size}.png`;
+            link.textContent = 'Baixar';
+            link.className = 'download-link';
+            div.appendChild(link);
+
+            container.appendChild(div);
+        });
+    </script>
+</body>
+</html>
